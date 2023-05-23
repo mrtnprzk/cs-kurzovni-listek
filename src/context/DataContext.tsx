@@ -22,14 +22,14 @@ export const DataProvider: FC<PropsWithChildren> = ({ children }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    console.log(data);
-
     useEffect(() => {
+        let ignore = false;
+
         async function fetchData() {
             try {
                 const response = await fetch("./data/data.json");
                 const data = await response.json();
-                setData(data);
+                if (!ignore) setData(data);
             } catch (error) {
                 console.error(error);
                 setError("Error fetching data");
@@ -37,7 +37,12 @@ export const DataProvider: FC<PropsWithChildren> = ({ children }) => {
                 setLoading(false);
             }
         }
+
         fetchData();
+
+        return () => {
+            ignore = true;
+        };
     }, []);
 
     const value = useMemo(() => ({ data, loading, error, setData }), [data]);
