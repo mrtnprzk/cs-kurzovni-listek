@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+th {
+    min-width: 4.5rem;
+}
+
+td {
+    padding: 0.5rem 0;
+}
