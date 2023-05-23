@@ -50,12 +50,11 @@ stoupá.
 ![Assignment Image](public/images/assignment.png)
 
 ### Technické požadavky:
-• použijte knihovnu react.js v libovolném stacku
-• použití typescriptu výhodou
-
-• aplikace by měla obsahovat základní automatické testy (cypress, react-testing-library, jest -
+- použijte knihovnu react.js v libovolném stacku
+- použití typescriptu výhodou
+- aplikace by měla obsahovat základní automatické testy (cypress, react-testing-library, jest -
 dle Vaší preference)
-• použijte git - aplikaci vystavte na libovolném public repositáři (github, gitlab, bitbucket, ...)
+- použijte git - aplikaci vystavte na libovolném public repositáři (github, gitlab, bitbucket, ...)
 
 ### JSON:
 [
