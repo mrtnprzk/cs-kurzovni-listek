@@ -1,10 +1,25 @@
 import { useContext } from "react";
 
 import { DataContext } from "@/context/DataContext";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { ExchangeData, ExchangeTableHead } from "@/global/types";
+import GenericTableHead from "@/Components/GenericTableHead";
+import ExchangeTableBody from "@/Components/ExchangeTableBody";
 
 export default function Home() {
     const { data, loading, error } = useContext(DataContext);
+    const [favoriteData, setFavoriteData] = useLocalStorage<ExchangeData[]>("favorite", []);
     console.log(data);
+
+    const addToFavorite = (value: ExchangeData) => {
+        const arrayWithAddedItem = [...favoriteData, value];
+        setFavoriteData(arrayWithAddedItem);
+    };
+
+    // const removeFromFavorite = (value: ExchangeData) => {
+    //     const arrayWithDeletedItem = TODO filter logic
+    //     setFavoriteData(arrayWithDeletedItem);
+    // };
 
     // This can be a spinning loader or a skeleton loader for the table
     // It is also possible to prefetch data on the server side using Next.js
@@ -22,36 +37,16 @@ export default function Home() {
 
     return (
         <main className="flex flex-col items-center gap-4 p-2 md:p-10">
-            <h2>Kurzovní lístek</h2>
+            <h2 className="text-3xl text-darkBlue font-bold">Kurzovní lístek</h2>
             <h3>Vaše oblíbené</h3>
+            <table className="w-full max-w-4xl text-center border-separate border-spacing-y-1">
+                <GenericTableHead objectWithValues={ExchangeTableHead} />
+                <ExchangeTableBody data={favoriteData} />
+            </table>
             <h3>Seznam všech kurzů</h3>
             <table className="w-full max-w-4xl text-center border-separate border-spacing-y-1">
-                <thead>
-                    <tr>
-                        <th>Měna</th>
-                        <th>Země</th>
-                        <th>Nákup</th>
-                        <th>Prodej</th>
-                        <th>ČNB</th>
-                        <th>Změna / 1 den</th>
-                        <th />
-                    </tr>
-                </thead>
-                <tbody>
-                    {data?.map(({ shortName, name, country, buy, sell, cnb, move }) => (
-                        <tr key={shortName} className="bg-blue-100 text-gray-600">
-                            <td >
-                                {shortName} {name}
-                            </td>
-                            <td>{country}</td>
-                            <td>{buy}</td>
-                            <td>{sell}</td>
-                            <td>{cnb}</td>
-                            <td className="text-red-500">{move}</td>
-                            <td className="underline cursor-pointer">Oblibena</td>
-                        </tr>
-                    ))}
-                </tbody>
+                <GenericTableHead objectWithValues={ExchangeTableHead} />
+                <ExchangeTableBody data={data} />
             </table>
         </main>
     );

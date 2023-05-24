@@ -25,6 +25,7 @@ export const DataProvider: FC<PropsWithChildren> = ({ children }) => {
     useEffect(() => {
         let ignore = false;
 
+        // Simulating to fetch data with try/catch/finally
         const fetchData = async () => {
             try {
                 const response = await fetch("./data/data.json");
