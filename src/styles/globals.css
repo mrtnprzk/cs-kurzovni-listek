@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 th {
-    min-width: 4.5rem;
+    min-width: 6rem;
 }
 
 td {

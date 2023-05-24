@@ -3,23 +3,27 @@ import { useContext } from "react";
 import { DataContext } from "@/context/DataContext";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { ExchangeData, ExchangeTableHead } from "@/global/types";
-import GenericTableHead from "@/Components/GenericTableHead";
-import ExchangeTableBody from "@/Components/ExchangeTableBody";
+import GenericTableHead from "@/components/GenericTableHead";
+import ExchangeTableBody from "@/components/ExchangeTableBody";
+import ExchangeTable from "@/components/ExchangeTable";
+import LayoutWithTitle from "@/components/LayoutWithTitle";
 
 export default function Home() {
     const { data, loading, error } = useContext(DataContext);
     const [favoriteData, setFavoriteData] = useLocalStorage<ExchangeData[]>("favorite", []);
-    console.log(data);
 
-    const addToFavorite = (value: ExchangeData) => {
-        const arrayWithAddedItem = [...favoriteData, value];
+    const addToFavorite = (exchangeItem: ExchangeData) => {
+        //I put this here to be sure I cannot have two same objects in array
+        if (favoriteData.some((favItem) => favItem.shortName === exchangeItem.shortName)) return;
+
+        const arrayWithAddedItem = [...favoriteData, exchangeItem];
         setFavoriteData(arrayWithAddedItem);
     };
 
-    // const removeFromFavorite = (value: ExchangeData) => {
-    //     const arrayWithDeletedItem = TODO filter logic
-    //     setFavoriteData(arrayWithDeletedItem);
-    // };
+    const removeFromFavorite = (exchangeItem: ExchangeData) => {
+        const arrayWithDeletedItem = favoriteData.filter((favItem) => favItem.shortName !== exchangeItem.shortName);
+        setFavoriteData(arrayWithDeletedItem);
+    };
 
     // This can be a spinning loader or a skeleton loader for the table
     // It is also possible to prefetch data on the server side using Next.js
@@ -38,16 +42,29 @@ export default function Home() {
     return (
         <main className="flex flex-col items-center gap-4 p-2 md:p-10">
             <h2 className="text-3xl text-darkBlue font-bold">Kurzovní lístek</h2>
-            <h3>Vaše oblíbené</h3>
-            <table className="w-full max-w-4xl text-center border-separate border-spacing-y-1">
-                <GenericTableHead objectWithValues={ExchangeTableHead} />
-                <ExchangeTableBody data={favoriteData} />
-            </table>
-            <h3>Seznam všech kurzů</h3>
-            <table className="w-full max-w-4xl text-center border-separate border-spacing-y-1">
-                <GenericTableHead objectWithValues={ExchangeTableHead} />
-                <ExchangeTableBody data={data} />
-            </table>
+
+            {Boolean(favoriteData.length) && (
+                <LayoutWithTitle title="Vaše oblíbené" className="bg-slate-50">
+                    <ExchangeTable>
+                        <GenericTableHead objectWithValues={ExchangeTableHead} />
+                        <ExchangeTableBody data={favoriteData} handleClick={removeFromFavorite} handleDesc={"Zrušit"} />
+                    </ExchangeTable>
+                </LayoutWithTitle>
+            )}
+
+            <LayoutWithTitle title="Seznam všech kurzů" className="bg-lightGrey">
+                {/* TODO make this component down below*/}
+                <div className="flex gap-2 bg-darkBlue text-lightGrey p-3">
+                    <div>Aktualni</div>
+                    <div>+ 1 den</div>
+                    <div>+ 2 den</div>
+                    <div>+ 3 den</div>
+                </div>
+                <ExchangeTable>
+                    <GenericTableHead objectWithValues={ExchangeTableHead} />
+                    <ExchangeTableBody data={data} handleClick={addToFavorite} handleDesc={"Oblíbená"} />
+                </ExchangeTable>
+            </LayoutWithTitle>
         </main>
     );
 }
