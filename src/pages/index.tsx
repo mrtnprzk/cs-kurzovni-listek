@@ -1,41 +1,21 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 import { DataContext } from "@/context/DataContext";
 import { FavoriteDataContext } from "@/context/FavoriteDataContext";
 import LayoutWithTitle from "@/components/LayoutWithTitle";
 import GenericTableHead from "@/components/GenericTableHead";
-import GenericDaySelector from "@/components/GenericDaySelector";
+import EstimatedDaySelector from "@/components/EstimatedDaySelector";
 import ExchangeTable from "@/components/ExchangeTable";
 import ExchangeTableBody from "@/components/ExchangeTableBody";
 import { ExchangeForEstimatedDays, ExchangeTableHead } from "@/global/types";
-import { useRouter } from "next/router";
+import { EstimatedDayContext } from "@/context/EstimatedDayContext";
 
+//I prefer to use arrow functin for components but for page files is Next.js recomending to use regular function.
+//It is mostly because of SSG and SSR but I still decided to leave it like that.
 export default function Home() {
     const { data, loading, error } = useContext(DataContext);
     const { favoriteData, addToFavorite, removeFromFavorite } = useContext(FavoriteDataContext);
-    const [estimatedDay, setEstimatedDay] = useState<number>(0);
-    const [initialValueSet, setInitialValueSet] = useState(false);
-    const router = useRouter();
-    const { estimated_day } = router.query;
-
-    const selectEstimatedDay = (day: number) => {
-        setEstimatedDay(day);
-        router.push(
-            {
-                pathname: router.pathname,
-                query: { ...router.query, estimated_day: day },
-            },
-            undefined,
-            { scroll: false } // false to prevent scrolling to the top of the page
-        );
-    };
-
-    useEffect(() => {
-        if (estimated_day && !initialValueSet) {
-            setEstimatedDay(+estimated_day);
-            setInitialValueSet(true);
-        }
-    }, [router.query, initialValueSet]);
+    const { estimatedDay, selectEstimatedDay } = useContext(EstimatedDayContext);
 
     if (loading)
         // This can be a spinning loader or a skeleton loader for the table
@@ -69,8 +49,8 @@ export default function Home() {
             )}
 
             <LayoutWithTitle title="Seznam všech kurzů" className="bg-lightGrey">
-                <GenericDaySelector
-                    objectWithValues={ExchangeForEstimatedDays}
+                <EstimatedDaySelector
+                    arrayWithObjects={ExchangeForEstimatedDays}
                     estimatedDay={estimatedDay}
                     setEstimatedDay={selectEstimatedDay}
                 />

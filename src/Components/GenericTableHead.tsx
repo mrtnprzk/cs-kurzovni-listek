@@ -1,9 +1,10 @@
 import { FC } from "react";
 
-/*
+/**
  *   This is Generic React Component to create Table Head
  *   It is neccesary to put object into props with string values for columns
  */
+
 interface GenericTableHeadProps<T> {
     objectWithValues: T;
 }

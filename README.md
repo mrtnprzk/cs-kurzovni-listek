@@ -54,7 +54,7 @@ npm run test
 5. Libovolným způsobem (např. barevně) musí být vyznačeno, zda kurz dané měny klesá /
    stoupá.
 
-![Assignment Image](public/images/assignment.png)
+![Assignment Image](public/images/assignment.webp)
 
 ### Technické požadavky:
 

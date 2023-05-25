@@ -8,13 +8,6 @@ export type ExchangeData = {
     cnb: number;
 };
 
-export enum ExchangeForEstimatedDays {
-    CURRENT = "Aktualní",
-    PLUS_ONE = "+ 1 den",
-    PLUS_TWO = "+ 2 dny",
-    PLUS_THREE = "+ 3 dny",
-}
-
 export enum ExchangeTableHead {
     CURRENCY = "Měna",
     COUNTRY = "Země",
@@ -23,3 +16,10 @@ export enum ExchangeTableHead {
     CNB = "ČNB",
     CHANGE = "Změna/1 den",
 }
+
+export const ExchangeForEstimatedDays = [
+    { name: "Aktualní", value: 0 },
+    { name: "+ 1 den", value: 1 },
+    { name: "+ 2 dny", value: 2 },
+    { name: "+ 3 dny", value: 3 },
+] as const;
