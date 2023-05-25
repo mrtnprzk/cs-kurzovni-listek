@@ -1,33 +1,26 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { DataContext } from "@/context/DataContext";
-import useLocalStorage from "@/hooks/useLocalStorage";
-import { ExchangeData, ExchangeTableHead } from "@/global/types";
-import GenericTableHead from "@/components/GenericTableHead";
-import ExchangeTableBody from "@/components/ExchangeTableBody";
-import ExchangeTable from "@/components/ExchangeTable";
+import { FavoriteDataContext } from "@/context/FavoriteDataContext";
 import LayoutWithTitle from "@/components/LayoutWithTitle";
+import GenericTableHead from "@/components/GenericTableHead";
+import GenericDaySelector from "@/components/GenericDaySelector";
+import ExchangeTable from "@/components/ExchangeTable";
+import ExchangeTableBody from "@/components/ExchangeTableBody";
+import { ExchangeForEstimatedDays, ExchangeTableHead } from "@/global/types";
 
 export default function Home() {
     const { data, loading, error } = useContext(DataContext);
-    const [favoriteData, setFavoriteData] = useLocalStorage<ExchangeData[]>("favorite", []);
+    const { favoriteData, addToFavorite, removeFromFavorite } = useContext(FavoriteDataContext);
+    const [estimatedDay, setEstimatedDay] = useState(0);
 
-    const addToFavorite = (exchangeItem: ExchangeData) => {
-        //I put this here to be sure I cannot have two same objects in array
-        if (favoriteData.some((favItem) => favItem.shortName === exchangeItem.shortName)) return;
-
-        const arrayWithAddedItem = [...favoriteData, exchangeItem];
-        setFavoriteData(arrayWithAddedItem);
+    const selectEstimatedDay = (number: number) => {
+        setEstimatedDay(number);
     };
 
-    const removeFromFavorite = (exchangeItem: ExchangeData) => {
-        const arrayWithDeletedItem = favoriteData.filter((favItem) => favItem.shortName !== exchangeItem.shortName);
-        setFavoriteData(arrayWithDeletedItem);
-    };
-
-    // This can be a spinning loader or a skeleton loader for the table
-    // It is also possible to prefetch data on the server side using Next.js
     if (loading)
+        // This can be a spinning loader or a skeleton loader for the table
+        // It is also possible to prefetch data on the server side using Next.js
         return (
             <div className="flex justify-center items-center h-screen">
                 <h3 className="text-xl font-bold">Loading...</h3>
@@ -57,13 +50,11 @@ export default function Home() {
             )}
 
             <LayoutWithTitle title="Seznam všech kurzů" className="bg-lightGrey">
-                {/* TODO make this component down below*/}
-                <div className="flex gap-2 bg-darkBlue text-lightGrey p-3">
-                    <div>Aktualni</div>
-                    <div>+ 1 den</div>
-                    <div>+ 2 den</div>
-                    <div>+ 3 den</div>
-                </div>
+                <GenericDaySelector
+                    objectWithValues={ExchangeForEstimatedDays}
+                    estimatedDay={estimatedDay}
+                    setEstimatedDay={selectEstimatedDay}
+                />
                 <ExchangeTable>
                     <GenericTableHead objectWithValues={ExchangeTableHead} />
                     <ExchangeTableBody

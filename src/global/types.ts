@@ -8,6 +8,13 @@ export type ExchangeData = {
     cnb: number;
 };
 
+export enum ExchangeForEstimatedDays {
+    CURRENT = "Aktualní",
+    PLUS_ONE = "+ 1 den",
+    PLUS_TWO = "+ 2 dny",
+    PLUS_THREE = "+ 3 dny",
+}
+
 export enum ExchangeTableHead {
     CURRENCY = "Měna",
     COUNTRY = "Země",
