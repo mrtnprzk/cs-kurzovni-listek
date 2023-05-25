@@ -35,12 +35,12 @@ const ExchangeTableBody: FC<ExchangeTableBodyProps> = ({
                     <td>{item.sell}</td>
                     <td>{cnbExchangeRate}</td>
                     <td style={{ color: colorOfMove }}>{item.move}</td>
-                    {isFiltered === false ? (
+                    {isFiltered ? (
+                        <td />
+                    ) : (
                         <td className="underline cursor-pointer" onClick={() => handleClick(item)}>
                             {handleDesc}
                         </td>
-                    ) : (
-                        <td />
                     )}
                 </tr>
             );

@@ -14,21 +14,28 @@ export default function Home() {
     const { data, loading, error } = useContext(DataContext);
     const { favoriteData, addToFavorite, removeFromFavorite } = useContext(FavoriteDataContext);
     const [estimatedDay, setEstimatedDay] = useState<number>(0);
+    const [initialValueSet, setInitialValueSet] = useState(false);
     const router = useRouter();
+    const { estimated_day } = router.query;
 
     const selectEstimatedDay = (day: number) => {
         setEstimatedDay(day);
-        router.push({
-            pathname: router.pathname,
-            query: { ...router.query, estimated_day: day },
-        });
+        router.push(
+            {
+                pathname: router.pathname,
+                query: { ...router.query, estimated_day: day },
+            },
+            undefined,
+            { scroll: false } // false to prevent scrolling to the top of the page
+        );
     };
 
-    // // TODO
-    // useEffect(() => {
-    //     const { estimated_day } = router.query;
-    //     if (estimated_day) setEstimatedDay(+estimated_day);
-    // }, []);
+    useEffect(() => {
+        if (estimated_day && !initialValueSet) {
+            setEstimatedDay(+estimated_day);
+            setInitialValueSet(true);
+        }
+    }, [router.query, initialValueSet]);
 
     if (loading)
         // This can be a spinning loader or a skeleton loader for the table
