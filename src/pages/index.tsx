@@ -50,7 +50,7 @@ export default function Home() {
 
             <LayoutWithTitle title="Seznam všech kurzů" className="bg-lightGrey">
                 <EstimatedDaySelector
-                    arrayWithObjects={ExchangeForEstimatedDays}
+                    arrayWithDayOption={ExchangeForEstimatedDays}
                     estimatedDay={estimatedDay}
                     setEstimatedDay={selectEstimatedDay}
                 />

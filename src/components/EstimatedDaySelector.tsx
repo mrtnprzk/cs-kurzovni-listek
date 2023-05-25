@@ -2,9 +2,8 @@ import { FC } from "react";
 
 /**
  * This is EstimatedEstimatedDaySelector Component.
- * It is neccesary to put array with objects of DayOption into props
+ * It is neccesary to put array with objects of interface DayOption into props
  * Allows selecting a day and triggers a callback when a day is clicked.
- * It is wrapped in useMemo to save calculations.
  */
 
 interface DayOption {
@@ -13,15 +12,19 @@ interface DayOption {
 }
 
 interface EstimatedDaySelectorProps {
-    arrayWithObjects: readonly DayOption[];
+    arrayWithDayOption: DayOption[] | readonly DayOption[];
     estimatedDay: number;
     setEstimatedDay: (index: number) => void;
 }
 
-const EstimatedDaySelector: FC<EstimatedDaySelectorProps> = ({ arrayWithObjects, estimatedDay, setEstimatedDay }): JSX.Element => (
+const EstimatedDaySelector: FC<EstimatedDaySelectorProps> = ({
+    arrayWithDayOption,
+    estimatedDay,
+    setEstimatedDay,
+}): JSX.Element => (
     <div className="flex border-4 border-darkBlue text-lightGrey">
-        {arrayWithObjects.map((object) => {
-            const selectedDay = estimatedDay === object.value;
+        {arrayWithDayOption.map((dayOption) => {
+            const selectedDay = estimatedDay === dayOption.value;
 
             const bgColor = selectedDay ? "bg-darkBlue" : "bg-white";
             const textColor = selectedDay ? "text-white" : "text-darkBlue";
@@ -29,10 +32,10 @@ const EstimatedDaySelector: FC<EstimatedDaySelectorProps> = ({ arrayWithObjects,
             return (
                 <button
                     className={`${bgColor} ${textColor} py-2 px-4`}
-                    key={object.name}
-                    onClick={() => setEstimatedDay(object.value)}
+                    key={dayOption.name}
+                    onClick={() => setEstimatedDay(dayOption.value)}
                 >
-                    {object.name}
+                    {dayOption.name}
                 </button>
             );
         })}
