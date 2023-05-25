@@ -1,6 +1,6 @@
 import { createContext, FC, PropsWithChildren, useMemo } from "react";
-import { ExchangeData } from "@/global/types";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { ExchangeData } from "@/global/types";
 
 interface FavoriteDataContextProps {
     favoriteData: ExchangeData[];
@@ -8,13 +8,13 @@ interface FavoriteDataContextProps {
     removeFromFavorite: (exchangeItem: ExchangeData) => void;
 }
 
-const DEFAULT_DATA_CONTEXT_PROPS: FavoriteDataContextProps = {
+const DEFAULT_FAV_DATA_CONTEXT_PROPS: FavoriteDataContextProps = {
     favoriteData: [],
     addToFavorite: () => [],
     removeFromFavorite: () => [],
 };
 
-export const FavoriteDataContext = createContext<FavoriteDataContextProps>(DEFAULT_DATA_CONTEXT_PROPS);
+export const FavoriteDataContext = createContext<FavoriteDataContextProps>(DEFAULT_FAV_DATA_CONTEXT_PROPS);
 
 export const FavoriteDataProvider: FC<PropsWithChildren> = ({ children }) => {
     const [favoriteData, setFavoriteData] = useLocalStorage<ExchangeData[]>("favorite", []);

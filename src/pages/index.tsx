@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { DataContext } from "@/context/DataContext";
 import { FavoriteDataContext } from "@/context/FavoriteDataContext";
@@ -8,15 +8,27 @@ import GenericDaySelector from "@/components/GenericDaySelector";
 import ExchangeTable from "@/components/ExchangeTable";
 import ExchangeTableBody from "@/components/ExchangeTableBody";
 import { ExchangeForEstimatedDays, ExchangeTableHead } from "@/global/types";
+import { useRouter } from "next/router";
 
 export default function Home() {
     const { data, loading, error } = useContext(DataContext);
     const { favoriteData, addToFavorite, removeFromFavorite } = useContext(FavoriteDataContext);
-    const [estimatedDay, setEstimatedDay] = useState(0);
+    const [estimatedDay, setEstimatedDay] = useState<number>(0);
+    const router = useRouter();
 
-    const selectEstimatedDay = (number: number) => {
-        setEstimatedDay(number);
+    const selectEstimatedDay = (day: number) => {
+        setEstimatedDay(day);
+        router.push({
+            pathname: router.pathname,
+            query: { ...router.query, estimated_day: day },
+        });
     };
+
+    // // TODO
+    // useEffect(() => {
+    //     const { estimated_day } = router.query;
+    //     if (estimated_day) setEstimatedDay(+estimated_day);
+    // }, []);
 
     if (loading)
         // This can be a spinning loader or a skeleton loader for the table
@@ -60,6 +72,7 @@ export default function Home() {
                     <ExchangeTableBody
                         dataForTable={data}
                         dataForFilter={favoriteData}
+                        estimatedDay={estimatedDay}
                         handleClick={addToFavorite}
                         handleDesc={"Oblíbená"}
                     />
