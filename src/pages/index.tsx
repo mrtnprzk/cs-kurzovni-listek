@@ -47,7 +47,11 @@ export default function Home() {
                 <LayoutWithTitle title="Vaše oblíbené" className="bg-slate-50">
                     <ExchangeTable>
                         <GenericTableHead objectWithValues={ExchangeTableHead} />
-                        <ExchangeTableBody data={favoriteData} handleClick={removeFromFavorite} handleDesc={"Zrušit"} />
+                        <ExchangeTableBody
+                            dataForTable={favoriteData}
+                            handleClick={removeFromFavorite}
+                            handleDesc={"Zrušit"}
+                        />
                     </ExchangeTable>
                 </LayoutWithTitle>
             )}
@@ -62,7 +66,12 @@ export default function Home() {
                 </div>
                 <ExchangeTable>
                     <GenericTableHead objectWithValues={ExchangeTableHead} />
-                    <ExchangeTableBody data={data} handleClick={addToFavorite} handleDesc={"Oblíbená"} />
+                    <ExchangeTableBody
+                        dataForTable={data}
+                        dataForFilter={favoriteData}
+                        handleClick={addToFavorite}
+                        handleDesc={"Oblíbená"}
+                    />
                 </ExchangeTable>
             </LayoutWithTitle>
         </main>

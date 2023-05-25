@@ -14,5 +14,5 @@ export enum ExchangeTableHead {
     BUY = "Nákup",
     SELL = "Prodej",
     CNB = "ČNB",
-    CHANGE = "Změna / 1 den",
+    CHANGE = "Změna/1 den",
 }
